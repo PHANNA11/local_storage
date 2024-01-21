@@ -39,6 +39,17 @@ class _HomeScreenState extends State<HomeScreen> {
         itemCount: users.length,
         itemBuilder: (context, index) => Card(
           child: ListTile(
+            onTap: () async {
+              final userData = Faker(provider: FakerDataProvider());
+              await UserDataBase()
+                  .updateData(User(
+                      id: users[index].id,
+                      name: userData.person.name(),
+                      age: userData.person.random.integer(70, min: 18)))
+                  .then((value) {
+                getData();
+              });
+            },
             onLongPress: () async {
               await UserDataBase()
                   .deleteData(deletUserId: users[index].id!)
