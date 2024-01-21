@@ -68,6 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       await getUser();
                       if (emailController.text.isEmpty ||
                           passController.text.isEmpty) {
+                        // ignore: use_build_context_synchronously
                         ScaffoldMessenger.of(context)
                             .showSnackBar(const SnackBar(
                           content: Text('Please Enter Something'),
@@ -75,6 +76,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       } else {
                         if (emailController.text == email &&
                             passController.text == password) {
+                          // ignore: use_build_context_synchronously
                           Navigator.push(
                               context,
                               MaterialPageRoute(
