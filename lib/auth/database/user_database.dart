@@ -1,7 +1,6 @@
-import 'dart:developer';
+// ignore_for_file: depend_on_referenced_packages
 
 import 'package:sqflite/sqflite.dart';
-import 'package:sqflite/sqlite_api.dart';
 import 'package:path/path.dart';
 import 'package:storage/auth/database/database_type.dart';
 import 'package:storage/auth/model/user_model.dart';
@@ -19,7 +18,7 @@ class UserDataBase extends DataBaseType {
         onCreate: (Database db, int version) async {
       // When creating the db, create the table
       await db.execute(
-          'CREATE TABLE $tableUser ($userId INTEGER PRIMARY KEY, $userName TEXT, $userAge INTEGER)');
+          'CREATE TABLE $tableUser ($userId INTEGER PRIMARY KEY AUTOINCREMENT, $userName TEXT, $userAge INTEGER)');
     });
   }
 
@@ -30,7 +29,11 @@ class UserDataBase extends DataBaseType {
   }
 
   //Update   Data
-  Future updateData() async {}
+  Future updateData(User? user) async {
+    var db = await initDataBase();
+    await db.update(tableUser, user!.toMap(),
+        where: '$userId=?', whereArgs: [user.id]);
+  }
 
   // Delete Data
   Future deleteData({required int deletUserId}) async {
