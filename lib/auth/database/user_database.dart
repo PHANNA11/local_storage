@@ -18,7 +18,7 @@ class UserDataBase extends DataBaseType {
         onCreate: (Database db, int version) async {
       // When creating the db, create the table
       await db.execute(
-          'CREATE TABLE $tableUser ($userId INTEGER PRIMARY KEY AUTOINCREMENT, $userName TEXT, $userAge INTEGER)');
+          'CREATE TABLE $tableUser ($userId INTEGER PRIMARY KEY AUTOINCREMENT, $userName TEXT, $userAge INTEGER,$createDate TEXT NOT NULL)');
     });
   }
 
@@ -42,9 +42,10 @@ class UserDataBase extends DataBaseType {
   }
 
   //Get Data
-  Future<List<User>> getData() async {
+  Future<List<User>> getData({int limit = 10, int offset = 0}) async {
     var db = await initDataBase();
-    List<Map<String, dynamic>> result = await db.query(tableUser);
+    List<Map<String, dynamic>> result =
+        await db.query(tableUser, limit: 10, offset: offset);
     return result.map((e) => User.fromMap(e)).toList();
   }
 }
